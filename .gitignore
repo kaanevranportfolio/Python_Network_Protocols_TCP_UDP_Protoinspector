@@ -2,3 +2,4 @@ net_venv/
 *egg-info/
 *_cache/
 *__pycache__/
+captured_packets.bin

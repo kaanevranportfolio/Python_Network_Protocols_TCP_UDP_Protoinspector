@@ -60,6 +60,9 @@ Or use the CLI if available (first activate venv):
 ```sh
 sudo env "PATH=$PATH" protoinspector sniff --interface enp3s0 --count 5 --output-file tests/captured_packets.bin
 ```
+## Screenshot
+
+![ProtoInspector Screenshot](pngs/screenshot.png)
 
 ## Running Tests
 
