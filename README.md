@@ -56,9 +56,9 @@ Run the main module:
 python -m protoinspector.main
 ```
 
-Or use the CLI if available:
+Or use the CLI if available (first activate venv):
 ```sh
-protoinspector
+sudo env "PATH=$PATH" protoinspector sniff --interface enp3s0 --count 5 --output-file tests/captured_packets.bin
 ```
 
 ## Running Tests
