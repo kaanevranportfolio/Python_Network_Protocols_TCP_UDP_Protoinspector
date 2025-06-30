@@ -1,13 +1,33 @@
 # protoinspector/sniffer.py
 
-from scapy.all import sniff, Raw
+from scapy.all import sniff, Raw, TCP, UDP, IP
 from protoinspector.protocol import Packet
-from protoinspector.analyzer import display_packet
+from protoinspector.analyzer import (
+    display_packet,
+    get_ip_header_table,
+    get_transport_header_table,
+    console
+)
+from rich.columns import Columns  # <-- Add this line
 import struct
 
 def _packet_callback_factory(output_file=None):
     def _packet_callback(pkt):
         print(pkt.summary())
+        ip_table = None
+        transport_table = None
+        if IP in pkt:
+            ip_table = get_ip_header_table(pkt[IP])
+        if TCP in pkt:
+            transport_table = get_transport_header_table("TCP", pkt[TCP])
+        elif UDP in pkt:
+            transport_table = get_transport_header_table("UDP", pkt[UDP])
+        if ip_table and transport_table:
+            console.print(Columns([ip_table, transport_table]))
+        elif ip_table:
+            console.print(ip_table)
+        elif transport_table:
+            console.print(transport_table)
         if Raw in pkt:
             raw_data = bytes(pkt[Raw])
             try:

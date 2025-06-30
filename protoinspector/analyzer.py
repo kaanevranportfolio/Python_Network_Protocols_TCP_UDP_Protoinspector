@@ -3,6 +3,7 @@
 from protoinspector.protocol import Packet
 from rich.console import Console
 from rich.table import Table
+from scapy.layers.inet import IP
 
 console = Console()
 
@@ -57,3 +58,54 @@ def analyze_packet_file(file_path: str):
             except Exception as e:
                 console.print(f"[bold red]Error parsing packet #{index}: {e}[/bold red]")
                 break
+
+from rich.columns import Columns
+
+def get_ip_header_table(header):
+    table = Table(title="IP Header")
+    table.add_column("Field", style="bold green")
+    table.add_column("Value", style="bold white")
+    table.add_row("Source IP", str(header.src))
+    table.add_row("Destination IP", str(header.dst))
+    table.add_row("Version", str(header.version))
+    table.add_row("Header Length", str(header.ihl))
+    table.add_row("TTL", str(header.ttl))
+    table.add_row("Protocol", str(header.proto))
+    table.add_row("Total Length", str(header.len))
+    table.add_row("ID", str(header.id))
+    table.add_row("Flags", str(header.flags))
+    table.add_row("Fragment Offset", str(header.frag))
+    table.add_row("Checksum", str(header.chksum))
+    return table
+
+def display_ip_header(header):
+    """
+    Display IP header fields in a rich table.
+    """
+    table = get_ip_header_table(header)
+    console.print(table)
+
+def get_transport_header_table(proto: str, header):
+    table = Table(title=f"{proto} Header")
+    table.add_column("Field", style="bold magenta")
+    table.add_column("Value", style="bold white")
+    if proto == "TCP":
+        table.add_row("Source Port", str(header.sport))
+        table.add_row("Destination Port", str(header.dport))
+        table.add_row("Sequence Number", str(header.seq))
+        table.add_row("Acknowledgment", str(header.ack))
+        table.add_row("Flags", str(header.flags))
+        table.add_row("Window", str(header.window))
+    elif proto == "UDP":
+        table.add_row("Source Port", str(header.sport))
+        table.add_row("Destination Port", str(header.dport))
+        table.add_row("Length", str(header.len))
+        table.add_row("Checksum", str(header.chksum))
+    return table
+
+def display_transport_header(proto: str, header):
+    """
+    Display TCP or UDP header fields in a rich table.
+    """
+    table = get_transport_header_table(proto, header)
+    console.print(table)
