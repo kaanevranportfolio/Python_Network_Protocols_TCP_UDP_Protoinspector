@@ -62,7 +62,7 @@ sudo env "PATH=$PATH" protoinspector sniff --interface enp3s0 --count 5 --output
 ```
 ## Screenshot
 
-![ProtoInspector Screenshot](pngs/screenshot.png)
+![ProtoInspector Screenshot](pngs/header.png)
 
 ## Running Tests
 
