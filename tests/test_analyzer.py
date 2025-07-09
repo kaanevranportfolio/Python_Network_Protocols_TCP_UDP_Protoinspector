@@ -12,7 +12,10 @@ def test_analyzer_reads_file(capsys):
 
     analyze_packet_file("test_packets.bin")
     out = capsys.readouterr().out
-    assert "foo" in out and "bar" in out
+
+    # Check that the hex output contains the ASCII payloads in hex form
+    assert "666f6f" in out  # hex for 'foo'
+    assert "626172" in out  # hex for 'bar'
 
     import os
     os.remove("test_packets.bin")

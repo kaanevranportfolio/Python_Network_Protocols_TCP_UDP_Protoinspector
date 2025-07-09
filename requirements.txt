@@ -2,4 +2,3 @@ bitstring
 pytest
 typer
 scapy
-tempfile
